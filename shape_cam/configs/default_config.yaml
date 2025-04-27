@@ -1,0 +1,42 @@
+# --- Attack Parameters ---
+attack_type: 'targeted' # 'targeted' or 'untargeted'
+target_class: 0      # E.g., ImageNet class index for 'pizza' (if targeted)
+patch_center: [0.5, 0.5] # Relative coordinates (e.g., image center)
+num_rays: 32           # Number of rays for DPR
+initial_ray_length: 0.1 # Initial relative radius
+max_iterations: 1000
+learning_rate_shape: 0.001
+learning_rate_texture: 0.01
+optimizer: 'Adam'      # 'Adam', 'SGD'
+
+# --- Loss Weights ---
+weight_adv: 300.0
+weight_style: 1e6      # Style loss usually needs high weight
+weight_content: 1e2    # Optional, depends on use case
+weight_smoothness: 1e-4 # Total variation loss weight
+weight_shape: 10.0     # Area penalty weight (beta in DPatch paper)
+shape_area_threshold: 0.05 # Target relative area (ps in DPatch paper)
+
+# --- Model Paths/Names ---
+target_model_name: 'resnet50'
+feature_extractor_name: 'vgg19' # For style/content loss
+device: 'cuda' # 'cuda' or 'cpu'
+
+# --- Input/Output ---
+target_image_path: 'data/target_images/tiger_shark2.jpg'
+style_image_path: 'data/style_images/style.jpg'
+output_dir: 'outputs/'
+
+# --- DPR Parameters ---
+dpr_lambda: -100 # Sharpness parameter for tanh activation
+
+# --- EOT Parameters (Optional, for physical robustness) ---
+use_eot: False
+eot_samples: 10
+eot_rotation_range: [-15, 15]
+eot_scale_range: [0.9, 1.1]
+eot_color_shift_std: 0.05
+# eot_background_dir: 'path/to/backgrounds' # Optional
+
+# --- Mask Sharpening ---
+sharpen_mask_at_iter: 400 # Iteration to binarize the mask
